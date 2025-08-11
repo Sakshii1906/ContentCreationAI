@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Content Cafe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8 text-center text-blue-600">Welcome to ContentCafe!!</h1>
+        <form method="POST" class="mb-8 bg-white shadow-md rounded px-8 pt-6 pb-8">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="prompt">
+                    Enter your prompt:
+                </label>
+                <textarea name="prompt" id="prompt" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="content_type">
+                    Select content type:
+                </label>
+                <select name="content_type" id="content_type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="text">Text</option>
+                    <option value="image">Image</option>
+                </select>
+            </div>
+            <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    Generate
+                </button>
+            </div>
+        </form>
+
+        <!-- Debug Info -->
+        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-4">
+            <strong class="font-bold">Debug Info:</strong>
+            
+            <p>Error: {{ error|default('None', true) }}</p>
+        </div>
+
+        {% if result %}
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h2 class="text-2xl font-bold mb-4">Generated Content:</h2>
+            <div class="whitespace-pre-wrap">{{ result }}</div>
+        </div>
+        {% endif %}
+
+        {% if image %}
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h2 class="text-2xl font-bold mb-4">Generated Image:</h2>
+            <img src="data:image/png;base64,{{ image }}" alt="Generated Image" class="mb-4 max-w-full h-auto"/>
+            <a href="{{ url_for('download_image', image=image) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block">
+                Download Image
+            </a>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Error:</strong>
+            <span class="block sm:inline">{{ error }}</span>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+
